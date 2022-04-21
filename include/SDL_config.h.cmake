@@ -522,6 +522,7 @@
 #cmakedefine SDL_VIDEO_VITA_PIB @SDL_VIDEO_VITA_PIB@
 #cmakedefine SDL_VIDEO_VITA_PVR @SDL_VIDEO_VITA_PVR@
 #cmakedefine SDL_VIDEO_VITA_PVR_OGL @SDL_VIDEO_VITA_PVR_OGL@
+#cmakedefine SDL_VIDEO_VITA_VGL @SDL_VIDEO_VITA_VGL@
 
 #if !defined(__WIN32__) && !defined(__WINRT__)
 #  if !defined(_STDINT_H_) && !defined(_STDINT_H) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
