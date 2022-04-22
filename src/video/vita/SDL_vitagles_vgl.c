@@ -30,7 +30,7 @@
 #include "SDL_vitagles_vgl.h"
 #include "SDL_hints.h"
 
-#include <psp2/kernel/clib.h>
+#define MEMORY_VITAGL_THRESHOLD 12 * 1024 * 1024
 
 // only one instance of vitaGL can run at the same time
 static int vgl_initialized = 0;
@@ -50,11 +50,6 @@ VITA_GLES_LoadLibrary(_THIS, const char *path)
     if (!vgl_initialized) {
         // init vitaGL once and never deinit it again until the driver dies
         enum SceGxmMultisampleMode gxm_ms;
-        //const char *vmem_hint = SDL_GetHint(SDL_HINT_VITAGL_GPU_POOL_SIZE);
-        //const char *umem_hint = SDL_GetHint(SDL_HINT_VITAGL_RAM_THRESHOLD);
-        const char *vmem_hint = "0x800000";
-        const char *umem_hint = "0x1000000";
-        GLuint vmem = 0, umem = 0;
 
         switch (_this->gl_config.multisamplesamples) { 
             case 2:  gxm_ms = SCE_GXM_MULTISAMPLE_2X; break;
@@ -64,11 +59,7 @@ VITA_GLES_LoadLibrary(_THIS, const char *path)
             default: gxm_ms = SCE_GXM_MULTISAMPLE_NONE; break;
         }
 
-        if (vmem_hint) vmem = strtoul(vmem_hint, NULL, 0);
-        if (umem_hint) umem = strtoul(umem_hint, NULL, 0);
-        if (!vmem) vmem = 0x800000;
-        if (!umem) umem = 0x1000000;
-        vglInitExtended(vmem, 960, 544, umem, gxm_ms);
+        vglInitExtended(0, 960, 544, MEMORY_VITAGL_THRESHOLD, gxm_ms);
         vgl_initialized = 1;
     }
 

@@ -2410,6 +2410,7 @@ elseif(VITA)
     if(HAVE_VIDEO_VITA_VGL)
         list(PREPEND EXTRA_LIBS
           SceShaccCg_stub
+          SceKernelDmacMgr_stub
         )
     endif()
     if(HAVE_VITA_PVR)
