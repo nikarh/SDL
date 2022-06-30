@@ -148,7 +148,7 @@ VITA_GLES_SetSwapInterval(_THIS, int interval)
         return -1;
     }
     _this->gl_data->swapinterval = interval;
-    vglWaitVblankStart(interval);
+    eglSwapInterval(0, interval);
     return 0;
 }
 
