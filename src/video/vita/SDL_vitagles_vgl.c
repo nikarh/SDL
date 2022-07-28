@@ -38,10 +38,7 @@ static int vgl_initialized = 0;
 
 void glPixelStorei(	GLenum pname, GLint param)
 {
-}
-
-void glTexParameteriv(GLenum target, GLenum pname, const GLint * params)
-{
+    //sceClibPrintf("glPixelStorei: %d\n", pname);
 }
 
 int
@@ -59,6 +56,7 @@ VITA_GLES_LoadLibrary(_THIS, const char *path)
             default: gxm_ms = SCE_GXM_MULTISAMPLE_NONE; break;
         }
 
+        sceSysmoduleLoadModule(SCE_SYSMODULE_IME);
         vglInitExtended(0, 960, 544, MEMORY_VITAGL_THRESHOLD, gxm_ms);
         vgl_initialized = 1;
     }
@@ -89,11 +87,6 @@ VITA_GLES_GetProcAddress(_THIS, const char *proc)
     if (strcmp(proc, "glPixelStorei") == 0)
     {
         return &glPixelStorei;
-    }
-
-    if (strcmp(proc, "glTexParameteriv") == 0)
-    {
-        return &glTexParameteriv;
     }
 
     return vglGetProcAddress(proc);
@@ -165,9 +158,15 @@ VITA_GLES_GetSwapInterval(_THIS)
 int
 VITA_GLES_SwapWindow(_THIS, SDL_Window * window)
 {
+    SDL_VideoData *videodata = (SDL_VideoData *)_this->driverdata;
+
     if (!vgl_initialized) {
         SDL_SetError("vitaGL is not initialized");
         return -1;
+    }
+
+    if (videodata->ime_active) {
+        sceImeUpdate();
     }
 
     vglSwapBuffers(GL_TRUE);
