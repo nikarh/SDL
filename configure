@@ -852,7 +852,6 @@ enable_hidapi
 enable_sensor
 enable_power
 enable_filesystem
-enable_threads
 enable_timers
 enable_file
 enable_misc
@@ -1643,7 +1642,6 @@ Optional Features:
   --enable-sensor         Enable the sensor subsystem [default=yes]
   --enable-power          Enable the power subsystem [default=yes]
   --enable-filesystem     Enable the filesystem subsystem [default=yes]
-  --enable-threads        Enable the threading subsystem [default=yes]
   --enable-timers         Enable the timer subsystem [default=yes]
   --enable-file           Enable the file subsystem [default=yes]
   --enable-misc           Enable the misc subsystem [default=yes]
@@ -3435,8 +3433,8 @@ orig_CFLAGS="$CFLAGS"
 
 # See docs/release_checklist.md
 SDL_MAJOR_VERSION=2
-SDL_MINOR_VERSION=23
-SDL_MICRO_VERSION=1
+SDL_MINOR_VERSION=24
+SDL_MICRO_VERSION=0
 SDL_VERSION=$SDL_MAJOR_VERSION.$SDL_MINOR_VERSION.$SDL_MICRO_VERSION
 
 SDL_BINARY_AGE=`expr $SDL_MINOR_VERSION \* 100 + $SDL_MICRO_VERSION`
@@ -20351,14 +20349,11 @@ printf "%s\n" "#define SDL_FILESYSTEM_DISABLED 1" >>confdefs.h
 else
     SUMMARY_modules="${SUMMARY_modules} filesystem"
 fi
-# Check whether --enable-threads was given.
-if test ${enable_threads+y}
-then :
-  enableval=$enable_threads;
-else $as_nop
-  enable_threads=yes
-fi
-
+# Many subsystems depend on threads, so leave them enabled by default
+#AC_ARG_ENABLE(threads,
+#[AS_HELP_STRING([--enable-threads], [Enable the threading subsystem [default=yes]])],
+#              , enable_threads=yes)
+enable_threads=yes
 if test x$enable_threads != xyes; then
 
 printf "%s\n" "#define SDL_THREADS_DISABLED 1" >>confdefs.h
@@ -26390,7 +26385,7 @@ CheckInotify()
 {
     save_LIBS="$LIBS"
     case "$host" in
-     *-*-freebsd*) LIBS="$LIBS -linotify"
+     *-*-freebsd*|*-*dragonfly*) LIBS="$LIBS -linotify"
       ;;
     esac
            for ac_header in sys/inotify.h
@@ -26426,7 +26421,7 @@ fi
 printf "%s\n" "#define HAVE_INOTIFY 1" >>confdefs.h
 
         case "$host" in
-            *-*-freebsd*)
+            *-*-freebsd*|*-*-dragonfly*)
                 EXTRA_LDFLAGS="$EXTRA_LDFLAGS -linotify"
                 ;;
         esac
