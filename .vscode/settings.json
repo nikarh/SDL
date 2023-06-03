@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.rules": "javascript",
+        "*.desktop": "ini",
+        "sdl_vitagles_pvr_c.h": "c"
+    }
+}

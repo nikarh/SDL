@@ -16,6 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
+          - { name: GLES (vitaGL),                 os: windows-latest, vgl: true }
           - { name: GLES (pib),                    os: windows-latest, pib: true }
           - { name: GLES (PVR_PSP2 + gl4es4vita),  os: windows-latest, pvr: true }
     steps:
@@ -63,6 +64,7 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=${VITASDK}/share/vita.toolchain.cmake \
           -DVIDEO_VITA_PIB=${{ !!matrix.platform.pib }} \
           -DVIDEO_VITA_PVR=${{ !!matrix.platform.pvr }} \
+          -DVIDEO_VITA_VGL=${{ !!matrix.platform.vgl }} \
           -DSDL_WERROR=ON \
           -DSDL_TESTS=ON \
           -DSDL_INSTALL_TESTS=ON \

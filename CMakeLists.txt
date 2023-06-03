@@ -499,6 +499,7 @@ endif()
 if(VITA)
   set_option(VIDEO_VITA_PIB  "Build with PSVita piglet gles2 support" OFF)
   set_option(VIDEO_VITA_PVR  "Build with PSVita PVR gles/gles2 support" OFF)
+  set_option(VIDEO_VITA_VGL  "Build with PSVita vitaGL support" OFF)
 endif()
 
 # General source files
@@ -2514,6 +2515,31 @@ elseif(VITA)
         set(SDL_VIDEO_VITA_PIB 1)
       else()
         set(HAVE_VIDEO_VITA_PIB OFF)
+      endif()
+    endif()
+
+    if(VIDEO_VITA_VGL)
+      check_include_file(vitaGL.h HAVE_VITAGL_H)
+
+      if(HAVE_VITAGL_H)
+        set(HAVE_OPENGLES TRUE)
+        set(SDL_VIDEO_OPENGL_ES 1)
+        set(SDL_VIDEO_RENDER_OGL_ES 1)
+        set(SDL_VIDEO_OPENGL_ES2 1)
+        set(SDL_VIDEO_RENDER_OGL_ES2 1)
+
+        set(HAVE_OPENGL TRUE)
+        set(SDL_VIDEO_OPENGL 1)
+
+        list(APPEND EXTRA_LIBS
+          vitaGL
+          vitashark
+          mathneon
+        )
+        set(HAVE_VIDEO_VITA_VGL ON)
+        set(SDL_VIDEO_VITA_VGL 1)
+      else()
+        set(HAVE_VIDEO_VITA_VGL OFF)
       endif()
     endif()
 

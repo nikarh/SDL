@@ -19,7 +19,7 @@ To build for the PSVita, make sure you have vitasdk and cmake installed and run:
 
 Notes
 -----
-* gles1/gles2 support and renderers are disabled by default and can be enabled by configuring with `-DVIDEO_VITA_PVR=ON`
+* gles1/gles2 support and renderers are disabled by default and can be enabled by configuring either with `-DVIDEO_VITA_PVR=ON` fir `PVR` implementation or `-DVIDEO_VITA_VGL=ON` for `vitaGL` implementation.
   These renderers support 720p and 1080i resolutions. These can be specified with:
   `SDL_setenv("VITA_RESOLUTION", "720", 1);` and `SDL_setenv("VITA_RESOLUTION", "1080", 1);`
 * Desktop GL 1.X and 2.X support and renderers are also disabled by default and also can be enabled with `-DVIDEO_VITA_PVR=ON` as long as gl4es4vita is present in your SDK.

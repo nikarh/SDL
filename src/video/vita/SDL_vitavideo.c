@@ -54,6 +54,10 @@
   #define VITA_GLES_DeleteContext SDL_EGL_DeleteContext
 #endif
 
+#if defined(SDL_VIDEO_VITA_VGL)
+  #include "SDL_vitagles_vgl.h"
+#endif
+
 SDL_Window *Vita_Window;
 
 static void VITA_Destroy(SDL_VideoDevice *device)
@@ -71,7 +75,7 @@ static SDL_VideoDevice *VITA_Create()
 {
     SDL_VideoDevice *device;
     SDL_VideoData *phdata;
-#if SDL_VIDEO_VITA_PIB
+#if SDL_VIDEO_VITA_PIB || SDL_VIDEO_VITA_VGL
     SDL_GLDriverData *gldata;
 #endif
     /* Initialize SDL_VideoDevice structure */
@@ -88,7 +92,7 @@ static SDL_VideoDevice *VITA_Create()
         SDL_free(device);
         return NULL;
     }
-#if SDL_VIDEO_VITA_PIB
+#if SDL_VIDEO_VITA_PIB || SDL_VIDEO_VITA_VGL
 
     gldata = (SDL_GLDriverData *)SDL_calloc(1, sizeof(SDL_GLDriverData));
     if (gldata == NULL) {
@@ -139,7 +143,7 @@ static SDL_VideoDevice *VITA_Create()
         device->DestroyWindowFramebuffer = VITA_DestroyWindowFramebuffer;
     */
 
-#if defined(SDL_VIDEO_VITA_PIB) || defined(SDL_VIDEO_VITA_PVR)
+#if defined(SDL_VIDEO_VITA_PIB) || defined(SDL_VIDEO_VITA_PVR) || defined(SDL_VIDEO_VITA_VGL)
 #if defined(SDL_VIDEO_VITA_PVR_OGL)
     if (SDL_getenv("VITA_PVR_OGL") != NULL) {
         device->GL_LoadLibrary = VITA_GL_LoadLibrary;
